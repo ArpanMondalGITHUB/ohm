@@ -1,0 +1,22 @@
+{
+  "name": "ohm",
+  "version": "0.1.0",
+  "description": "A small coding agent harness",
+  "type": "module",
+  "bin": {
+    "ohm": "./bin/ohm.js"
+  },
+  "scripts": {
+    "dev": "tsx src/cli.ts",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "tsx": "^4.23.15"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "typescript": "^7.0.2",
+    "vitest": "^5.1.0"
+  }
+}
