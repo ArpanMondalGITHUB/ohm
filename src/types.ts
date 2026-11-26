@@ -7,11 +7,20 @@ export interface ToolCall {
   arguments: string;
 }
 
+/**
+ * A provider's own copy of a reply, sent back to THAT provider unchanged on the next turn.
+ * Anthropic needs this for thinking blocks (Task 9). Other providers ignore it.
+ */
+export interface ReplayData {
+  api: string;   // which adapter wrote it, e.g. "anthropic"
+  data: unknown; // only that adapter knows what's inside
+}
+
 /** One message in the conversation history we send to the model. */
 export type Message =
   | { role: "system"; content: string }
   | { role: "user"; content: string }
-  | { role: "assistant"; content: string; toolCalls?: ToolCall[] }
+  | { role: "assistant"; content: string; toolCalls?: ToolCall[]; replay?: ReplayData }
   | { role: "tool"; toolCallId: string; content: string };
 
 // ---------- Tools ----------
@@ -66,7 +75,7 @@ export type ProviderEvent =
   | { type: "text_delta"; text: string }
   | { type: "reasoning_delta"; text: string }  // the model's thinking, if the provider shows it
   | { type: "tool_call"; call: ToolCall }      // emitted once the call is complete
-  | { type: "done"; stopReason: StopReason; usage?: Usage };
+  | { type: "done"; stopReason: StopReason; usage?: Usage; replay?: ReplayData };
 
 export interface ProviderRequest {
   model: string;
